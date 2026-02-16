@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="ui/public/hero-image.png" width="800" alt="Audify Header">
+  <img src="docs/assets/InnovationHub-HeaderImage.png" width="800" alt="Audify Header">
 </p>
 
 # 🎧 Audify - AI Document to Podcast Generator
