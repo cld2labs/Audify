@@ -15,7 +15,7 @@
     "react-router-dom": "^6.20.1",
     "@reduxjs/toolkit": "^2.0.1",
     "react-redux": "^9.0.4",
-    "axios": "^1.6.2",
+    "axios": "^1.13.5",
     "react-dropzone": "^14.2.3",
     "wavesurfer.js": "^7.4.4",
     "lucide-react": "^0.294.0",
@@ -23,6 +23,9 @@
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.16",
     "date-fns": "^3.0.6"
+  },
+  "overrides": {
+    "@remix-run/router": "1.23.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
