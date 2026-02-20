@@ -3,6 +3,9 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
+# Create non-root runtime user
+RUN addgroup --system app && adduser --system --ingroup app app
+
 # Install system dependencies for OCR (tesseract), PDF-to-image (poppler), and file type detection (libmagic1)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
@@ -22,6 +25,9 @@ RUN pip install -r requirements.txt
 
 # Copy the rest of the application files into the container
 COPY . .
+RUN chown -R app:app /app
+
+USER app
 
 # Expose the port the service runs on
 EXPOSE 8001

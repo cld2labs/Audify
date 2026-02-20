@@ -14,11 +14,16 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN addgroup --system app && adduser --system --ingroup app app
+
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY . .
+RUN chown -R app:app /app
+
+USER app
 
 EXPOSE 8003
 
