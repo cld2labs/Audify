@@ -504,7 +504,7 @@ docker compose logs -f backend pdf-service llm-service tts-service frontend
 
 ## License
 
-This project currently does not include a published license file. Add a `LICENSE.md` before distributing or reusing in external projects.
+This project is licensed under our [LICENSE](./LICENSE.md) file for details.
 
 ---
 
@@ -517,6 +517,6 @@ This project currently does not include a published license file. Add a `LICENSE
 - Validate OCR output quality for scanned documents.
 - Test generated audio and dialogue for factual correctness and tone suitability.
 
-For deployment in regulated environments, add an explicit policy and usage disclaimer document to this repository.
+For full disclaimer details, see [DISCLAIMER.md](./DISCLAIMER.md)
 
 ---
