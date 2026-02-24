@@ -1,4 +1,4 @@
-# Contributing to  FinSights 
+# Contributing to  Audify 
 
 Thank you for your interest in contributing to the
 **Audify** by Cloud2 Labs.
