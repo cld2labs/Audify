@@ -23,6 +23,8 @@ Microservices-based AI application that converts PDF, DOC, and DOCX documents in
   - [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
 - [Usage Guide](#usage-guide)
+- [Inference Benchmarks](#inference-benchmarks)
+- [Model Capabilities](#model-capabilities)
 - [Environment Variables](#environment-variables)
 - [Technology Stack](#technology-stack)
 - [Troubleshooting](#troubleshooting)
@@ -383,6 +385,85 @@ Audify/
 | LLM Service (`:8002`) | `/generate-script` | `POST` | Build dialogue from extracted text |
 | TTS Service (`:8003`) | `/generate-audio` | `POST` | Create podcast audio from dialogue |
 | TTS Service (`:8003`) | `/voices` | `GET` | List available TTS voices |
+
+---
+
+## Inference Benchmarks
+
+The table below compares inference performance across different providers, deployment modes, and hardware profiles using a standardized Audify script-generation workload averaged over 3 runs.
+
+| Provider | Model | Deployment | Context Window | Avg Input Tokens | Avg Output Tokens | Avg Tokens / Request | P50 Latency (ms) | P95 Latency (ms) | Throughput (req/s) | Hardware |
+|----------|-------|------------|----------------|------------------|-------------------|----------------------|------------------|------------------|--------------------|----------|
+| vLLM | `Qwen/Qwen3:1.7b` | Local | 4,096 | 1,183 | 1,308 | 2,492 | 58,855 | 59,773 | 0.0162 | Apple Silicon Metal (Macbook Pro M4) |
+| OpenAI (Cloud) | `gpt-4o-mini` | API (Cloud) | 128K | 1,625 | 680 | 2,330 | 19,848 | 20,733 | 0.0276 | Cloud GPUs |
+
+> **Notes:**
+>
+> - Context Window for vLLM (4,096) reflects the `LLM_MAX_TOKENS` / `--max-model-len` used during benchmarking, not the model's native maximum context. vLLM shares its configured context between input and output tokens.
+> - All benchmarks use the same Audify script-generation prompt and identical inputs across 3 runs.
+> - Token counts may vary slightly per run due to non-deterministic model output.
+> - vLLM on Apple Silicon requires [vllm-metal](https://github.com/vllm-project/vllm-metal); the standard `pip install vllm` package does not provide macOS Metal support.
+
+---
+
+## Model Capabilities
+
+The current Audify inference options balance local control, on-prem deployment, and managed cloud latency depending on your script-generation requirements.
+
+### Qwen3-1.7B
+
+A 1.7-billion-parameter open-weight instruction model from Alibaba's Qwen family, suited for lightweight local inference, developer workstations, and cost-efficient on-prem deployments.
+
+| Attribute | Details |
+|-----------|---------|
+| **Parameters** | 1.7B total (1.4B non-embedding) |
+| **Architecture** | Transformer with Grouped Query Attention (GQA), 28 layers, 16 Q-heads / 8 KV-heads |
+| **Context Window** | 32,768 tokens native |
+| **Reasoning Mode** | Switchable thinking and non-thinking modes in the same model |
+| **Tool / Function Calling** | Supported; MCP (Model Context Protocol) compatible |
+| **Structured Output** | JSON-structured responses supported |
+| **Multilingual** | 100+ languages and dialects |
+| **Code Benchmarks** | Strong small-model performance for code generation, translation, and structured assistant tasks |
+| **Quantization Formats** | GGUF, AWQ, GPTQ, MLX |
+| **Inference Runtimes** | Ollama, vLLM, llama.cpp, LM Studio, SGLang, KTransformers |
+| **Fine-Tuning** | Full fine-tuning and adapter-based (LoRA) workflows supported |
+| **License** | Apache 2.0 |
+| **Deployment** | Local, on-prem, air-gapped, cloud; full data sovereignty |
+
+### GPT-4o-mini
+
+OpenAI's cost-efficient multimodal model, accessible exclusively through cloud APIs.
+
+| Attribute | Details |
+|-----------|---------|
+| **Parameters** | Not publicly disclosed |
+| **Architecture** | Multimodal transformer (text + image input, text output) |
+| **Context Window** | 128,000 input tokens / 16,384 max output tokens |
+| **Reasoning Mode** | Standard inference (no explicit chain-of-thought toggle) |
+| **Tool / Function Calling** | Supported; parallel function calling available |
+| **Structured Output** | JSON mode and schema-constrained output supported |
+| **Multilingual** | Broad multilingual support |
+| **Code Benchmarks** | MMMLU: ~87%, strong HumanEval and MBPP scores |
+| **Pricing** | $0.15 / 1M input tokens, $0.60 / 1M output tokens (Batch API: 50% discount) |
+| **Fine-Tuning** | Supervised fine-tuning via OpenAI API |
+| **License** | Proprietary (OpenAI Terms of Use) |
+| **Deployment** | Cloud-only via OpenAI API or Azure OpenAI Service |
+| **Knowledge Cutoff** | October 2023 |
+
+### Comparison Summary
+
+| Audify Capability | Audify Local (`Qwen3-1.7B` via vLLM) | Audify Cloud (`gpt-4o-mini`) |
+|-------------------|--------------------------------------|-------------------------------|
+| Script generation | Yes | Yes |
+| Structured JSON output | Yes | Yes |
+| Tool / function calling | Yes | Yes |
+| Deployment mode | Local / on-prem | Cloud API |
+| Data sovereignty | Full local control | No |
+| Open weights | Yes (Apache 2.0) | No (proprietary) |
+| Fine-tuning path | Full fine-tuning + LoRA adapters | Supervised fine-tuning (API only) |
+| Edge-device optimization | GGUF / AWQ / GPTQ / MLX | N/A |
+| Multimodal image input | No | Yes |
+| Native context window | 32K | 128K |
 
 ---
 
