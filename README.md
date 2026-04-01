@@ -395,14 +395,17 @@ The table below compares inference performance across different providers, deplo
 | Provider | Model | Deployment | Context Window | Avg Input Tokens | Avg Output Tokens | Avg Tokens / Request | P50 Latency (ms) | P95 Latency (ms) | Throughput (req/s) | Hardware |
 |----------|-------|------------|----------------|------------------|-------------------|----------------------|------------------|------------------|--------------------|----------|
 | vLLM | `Qwen/Qwen3:1.7b` | Local | 4,096 | 1,183 | 1,308 | 2,492 | 58,855 | 59,773 | 0.0162 | Apple Silicon Metal (Macbook Pro M4) |
+| OPEA EI / SLM | `Qwen/Qwen3:1.7b` | Local | 8.1K | 1,075 | 350 | 1,425 | 10,446 | 23,445 | 0.0853 | Xeon CPU (CPU only) |
 | OpenAI (Cloud) | `gpt-4o-mini` | API (Cloud) | 128K | 1,625 | 680 | 2,330 | 19,848 | 20,733 | 0.0276 | Cloud GPUs |
 
 > **Notes:**
 >
 > - Context Window for vLLM (4,096) reflects the `LLM_MAX_TOKENS` / `--max-model-len` used during benchmarking, not the model's native maximum context. vLLM shares its configured context between input and output tokens.
+> - EI is configured with an 8,192-token context window for this benchmark run.
 > - All benchmarks use the same Audify script-generation prompt and identical inputs across 3 runs.
 > - Token counts may vary slightly per run due to non-deterministic model output.
 > - vLLM on Apple Silicon requires [vllm-metal](https://github.com/vllm-project/vllm-metal); the standard `pip install vllm` package does not provide macOS Metal support.
+> - [Intel OPEA EI](https://github.com/opea-project/Enterprise-Inference) runs on Intel Xeon CPUs without GPU acceleration.
 
 ---
 
