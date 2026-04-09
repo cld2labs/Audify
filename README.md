@@ -23,7 +23,7 @@ Microservices-based AI application that converts PDF, DOC, and DOCX documents in
   - [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
 - [Usage Guide](#usage-guide)
-- [Inference Benchmarks](#inference-benchmarks)
+- [Inference Metrics](#inference-metrics)
 - [Model Capabilities](#model-capabilities)
 - [Environment Variables](#environment-variables)
 - [Technology Stack](#technology-stack)
@@ -388,7 +388,7 @@ Audify/
 
 ---
 
-## Inference Benchmarks
+## Inference Metrics
 
 The table below compares inference performance across different providers, deployment modes, and hardware profiles using a standardized Audify script-generation workload averaged over 3 runs.
 
@@ -402,7 +402,7 @@ The table below compares inference performance across different providers, deplo
 >
 > - Context Window for vLLM (4,096) reflects the `LLM_MAX_TOKENS` / `--max-model-len` used during benchmarking, not the model's native maximum context. vLLM shares its configured context between input and output tokens.
 > - EI is configured with an 8,192-token context window for this benchmark run.
-> - All benchmarks use the same Audify script-generation prompt and identical inputs across 3 runs.
+> - All metrics use the same Audify script-generation prompt and identical inputs across 3 runs.
 > - Token counts may vary slightly per run due to non-deterministic model output.
 > - vLLM on Apple Silicon requires [vllm-metal](https://github.com/vllm-project/vllm-metal); the standard `pip install vllm` package does not provide macOS Metal support.
 > - [Intel OPEA EI](https://github.com/opea-project/Enterprise-Inference) runs on Intel Xeon CPUs without GPU acceleration.
